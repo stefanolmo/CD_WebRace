@@ -8,8 +8,10 @@
   Board: ESP32S3 Dev Module, "USB CDC On Boot: Enabled", PSRAM come da scheda.
 
   !!! DA VERIFICARE PRIMA DI COLLEGARE !!!
-  1) Pin display / retroilluminazione: controllare lo schema Freenove (sotto).
-  2) Pin CU_RX / CU_TX: scegliere due GPIO liberi sul connettore di espansione.
+  1) Pin display: verificati sullo schema ufficiale Freenove 2.8" (FNK0104B,
+     ILI9341): CS=10, MOSI=11, SCK=12, MISO=13, DC(LCD_RS)=46, BL=45.
+  2) Pin CU_RX / CU_TX: GPIO 21 e 14, presi dal connettore P3 (IO2, IO3, IO14,
+     IO21) dello schema. Evitati IO3 (strapping) e UART0 (RXD0/TXD0 = console USB).
   3) Livelli logici: l'ESP32 e' a 3.3 V. Misurare con un tester i livelli della
      porta della CU; se sono a 5 V serve un level shifter. Non collegare a occhio.
   4) Protocollo (19200 8N1, frame '"' ... '$', checksum 1 char): ricostruito
@@ -21,7 +23,7 @@
 #include <LovyanGFX.hpp>
 
 // ---------------- Configurazione pin ----------------
-// Display (valori Freenove FNK0104 secondo la mia memoria: VERIFICARE)
+// Display (FNK0104B, da schema ufficiale Freenove)
 #define PIN_TFT_SCLK 12
 #define PIN_TFT_MOSI 11
 #define PIN_TFT_MISO 13
@@ -31,8 +33,8 @@
 #define TFT_INVERT   false   // se i colori sono invertiti metti true
 
 // UART verso la Control Unit
-#define CU_RX_PIN    18      // RX ESP32  <- TX CU
-#define CU_TX_PIN    17      // TX ESP32  -> RX CU
+#define CU_RX_PIN    21      // RX ESP32  <- TX CU
+#define CU_TX_PIN    14      // TX ESP32  -> RX CU
 #define CU_BAUD      19200
 
 // ---------------- Display ----------------

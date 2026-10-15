@@ -10,8 +10,11 @@
   !!! DA VERIFICARE PRIMA DI COLLEGARE !!!
   1) Pin display: verificati sullo schema ufficiale Freenove 2.8" (FNK0104B,
      ILI9341): CS=10, MOSI=11, SCK=12, MISO=13, DC(LCD_RS)=46, BL=45.
-  2) Pin CU_RX / CU_TX: GPIO 21 e 14, presi dal connettore P3 (IO2, IO3, IO14,
-     IO21) dello schema. Evitati IO3 (strapping) e UART0 (RXD0/TXD0 = console USB).
+  2) Pin CU_RX / CU_TX: connettore P2 ("UART" nello schema) = GPIO44 (RXD0) e
+     GPIO43 (TXD0). L'USB della scheda e' nativa, quindi questi pin sono liberi.
+     Attenzione: la ROM scrive i log di boot su TXD0 a 115200 baud, quindi
+     all'accensione la CU puo' ricevere qualche byte spurio.
+     Mantenere "USB CDC On Boot: Enabled" cosi' Serial resta sull'USB nativa.
   3) Livelli logici: l'ESP32 e' a 3.3 V. Misurare con un tester i livelli della
      porta della CU; se sono a 5 V serve un level shifter. Non collegare a occhio.
   4) Protocollo (19200 8N1, frame '"' ... '$', checksum 1 char): ricostruito
@@ -33,8 +36,8 @@
 #define TFT_INVERT   false   // se i colori sono invertiti metti true
 
 // UART verso la Control Unit
-#define CU_RX_PIN    21      // RX ESP32  <- TX CU
-#define CU_TX_PIN    14      // TX ESP32  -> RX CU
+#define CU_RX_PIN    44      // RX ESP32  <- TX CU
+#define CU_TX_PIN    43      // TX ESP32  -> RX CU
 #define CU_BAUD      19200
 
 // ---------------- Display ----------------
